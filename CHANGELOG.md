@@ -1,5 +1,10 @@
 # Changelog
 
+### 23 October 2018
+- working on a game state
+- just a whole lotta globals
+- show a banner when something is found
+
 #### 21 October 2018
 - There is a kitten
 - The robot makes a noise when it moves (thanks to the Celeste devs for sound timer stuff)

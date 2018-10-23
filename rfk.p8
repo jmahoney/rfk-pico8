@@ -7,8 +7,6 @@ function _init()
 
     sfx_timer = 0
 
-    success_message = "you found kittem! good robot!"
-
     non_kitten_items = {
         "it's an empty box",
         "it's an broken crt monitor",
@@ -30,17 +28,18 @@ function _init()
         "a thing your aunt gave you which you don't know what it is",
     }
 
-    item_glyphs = {"!","#","$","%","^","&","*","(",")"}
+    kitten_found = false
+    non_kitten_item_found = false
+    current_non_kitten_item = nil
 
-    robot_color = 9
-    checked_item_color = 12
     background_color = 1
-
-    found_non_kittem_item = false
-    found_kitten = false
+    checked_item_color = 12
 
     max_x = 125
     max_y = 123
+
+    robot_can_move = true
+    robot_color = 9
     robot_start_x = 64
     robot_start_y = 64
 
@@ -49,27 +48,26 @@ function _init()
     robot["y"] = robot_start_y
     robot["glyph"] = "@"
 
+    item_glyphs = {"!","#","$","%","^","&","*","(",")"}
     items = {}
-    foreach(item_glyphs, create_item)
+    foreach(non_kitten_items, create_item)
 
     kitten = create_kitten()
     add(items, kitten)
 end
 
 function _update()
+    if kitten_found then
 
-    if (found_non_kittem_item) then
-
-    elseif (found_kitten) then
+    elseif non_kitten_item_found then
 
     else
         move_robot()
         check_collision()
+        if sfx_timer>0 then
+	        sfx_timer-=1
+        end
     end
-
-    if sfx_timer>0 then
-	    sfx_timer-=1
-	end
 end
 
 function _draw()
@@ -77,24 +75,33 @@ function _draw()
     foreach(items, draw_item)
     draw_robot()
 
+    if kitten_found then
+        draw_kitten_found()
+    elseif non_kitten_item_found then
+        draw_non_kitten_item_found()
+    end
+
     if (debug) then draw_debug() end
 end
 
 function check_collision()
-    if robot.x == kitten.x and robot.y == kitten.y then
-        found_kitten = true
+    if robot.x == kitten.x  and robot.y == kitten.y then
+        kitten_found = true
         return
     end
 
     for i in all(items) do
         if i.x == robot.x and i.y == robot.y then
-            found_non_kittem_item = true
+            non_kitten_item_found = true
+            current_non_kitten_item = i
+            i.checked = true
             return
         end
     end
 end
 
-function create_item()
+--- oh dear
+function create_item(description)
     local item = {}
     local coords = pick_coords()
     item["checked"] = false;
@@ -103,6 +110,7 @@ function create_item()
     item["y"] = coords.y
     item["glyph"] = item_glyphs[flr(rnd(#item_glyphs))+1]
     item["color"] = random_color()
+    item["description"] = description
     add(items, item)
 end
 
@@ -110,6 +118,7 @@ function create_kitten()
     local kitten = {}
     local coords = pick_coords()
     kitten["is_kitten"] = true;
+    kitten["checked"] = false;
     kitten["x"] = coords.x
     kitten["y"] = coords.y
     kitten["glyph"] = item_glyphs[flr(rnd(#item_glyphs))+1]
@@ -119,7 +128,7 @@ end
 
 function draw_debug()
     local msg = "rx:"..robot.x..",ry:"..robot.y..",kx:"..kitten.x..",ky:"..kitten.y
-    print(msg, 2,2, 3);
+    print(msg, 0,0, 3);
 end
 
 function draw_item(item)
@@ -128,12 +137,21 @@ function draw_item(item)
     print(item.glyph, item.x, item.y, color)
 end
 
+function draw_kitten_found()
+    rectfill(8, 8, 119, 119, 3)
+    print("you found kitten\nway to go robot!", 26, 26, 9)
+end
+
+function draw_non_kitten_item_found()
+    rectfill(8, 8, 119, 119, 3)
+    print(current_non_kitten_item.description, 26, 26, 9)
+end
+
 function draw_robot()
     print(robot.glyph, robot.x, robot.y, robot_color)
 end
 
 function move_robot()
-
     if btn(0) or btn(1) or btn(2) or btn(3) then
         psfx(0)
         if sfx_timer <= 0 then
