@@ -7,7 +7,7 @@ function _init()
 
     sfx_timer = 0
 
-    non_kitten_items = {
+    non_kitten_item_descriptions = {
         "it's an empty box",
         "it's an broken crt monitor",
         "you found a dog",
@@ -50,9 +50,14 @@ function _init()
 
     item_glyphs = {"!","#","$","%","^","&","*","(",")"}
     items = {}
-    foreach(non_kitten_items, create_item)
 
-    kitten = create_kitten()
+    for description in all(non_kitten_item_descriptions) do
+        add(items, create_item())
+    end
+
+    kitten = create_item()
+    kitten.is_kitten = true
+
     add(items, kitten)
 end
 
@@ -111,20 +116,9 @@ function create_item(description)
     item["glyph"] = item_glyphs[flr(rnd(#item_glyphs))+1]
     item["color"] = random_color()
     item["description"] = description
-    add(items, item)
+    return item
 end
 
-function create_kitten()
-    local kitten = {}
-    local coords = pick_coords()
-    kitten["is_kitten"] = true;
-    kitten["checked"] = false;
-    kitten["x"] = coords.x
-    kitten["y"] = coords.y
-    kitten["glyph"] = item_glyphs[flr(rnd(#item_glyphs))+1]
-    kitten["color"] = random_color()
-    return kitten
-end
 
 function draw_debug()
     local msg = "rx:"..robot.x..",ry:"..robot.y..",kx:"..kitten.x..",ky:"..kitten.y
