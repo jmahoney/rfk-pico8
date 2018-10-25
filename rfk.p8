@@ -90,19 +90,33 @@ function _draw()
 end
 
 function check_collision()
-    if robot.x == kitten.x  and robot.y == kitten.y then
+    if overlaps(robot.x, kitten.x) and overlaps(robot.y, kitten.y) then
         kitten_found = true
         return
     end
 
     for i in all(items) do
-        if i.x == robot.x and i.y == robot.y then
+        if overlaps(robot.x, i.x) and overlaps(robot.y, i.y) then
             non_kitten_item_found = true
             current_non_kitten_item = i
             i.checked = true
             return
         end
     end
+end
+
+function overlaps(src, dst)
+    if src > dst then
+        if src - dst < 3 then
+            return true
+        end
+    else
+        if dst - src < 3 then
+            return true
+        end
+    end
+
+    return false
 end
 
 --- oh dear
@@ -172,12 +186,12 @@ function pick_coords()
     coords["x"] = flr(rnd(max_x))+1
     coords["y"] = flr(rnd(max_y))+1
 
-    if coords.x == robot_start_x and coords.y == robot_start_y then
+    if overlaps(coords.x, robot_start_x) and overlaps(coords.y, robot_start_y) then
         return pick_coords()
     end
 
     for i in all(items) do
-        if i.x == coords.x and i.y == coords.y then
+        if overlaps(coords.x, i.x) and overlaps(coords.y, i.y) then
             return pick_coords()
         end
     end
