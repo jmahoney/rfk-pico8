@@ -1,5 +1,10 @@
 # Changelog
 
+### 25 October 2018
+- refactored item creation
+- improved collision detection and item spread
+
+
 ### 23 October 2018
 - working on a game state
 - just a whole lotta globals

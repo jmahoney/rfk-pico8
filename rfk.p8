@@ -52,10 +52,10 @@ function _init()
     items = {}
 
     for description in all(non_kitten_item_descriptions) do
-        add(items, create_item())
+        add(items, create_item(description))
     end
 
-    kitten = create_item()
+    kitten = create_item("kitten")
     kitten.is_kitten = true
 
     add(items, kitten)
