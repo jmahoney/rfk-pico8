@@ -229,21 +229,16 @@ function random_color()
 end
 
 function random_n_from_seq(seq, n)
-    local mutable_seq = {}
-    for v in all(seq) do
-        add(mutable_seq, v)
-    end
-
     local randomised_seq = {}
     local i = 0
     local s = n
 
-    if n > #mutable_seq then s = #mutable_seq end
+    if n > #seq then s = #seq end
 
     while i < s do
-        local pick = mutable_seq[random_number(#mutable_seq)]
+        local pick = seq[random_number(#seq)]
         add(randomised_seq, pick)
-        del(mutable_seq, pick)
+        del(seq, pick)
         i += 1
     end
     return randomised_seq
