@@ -7,27 +7,6 @@ function _init()
 
     sfx_timer = 0
 
-    non_kitten_item_descriptions = {
-        "it's an empty box",
-        "it's an broken crt monitor",
-        "you found a dog",
-        "a voucher $20 off hacksaws at joe's hardware",
-        "one prophylactic, soiled",
-        "he doesn't have time to discuss this with the committee",
-        "she is not a committee",
-        "a bag of oranges. you're allergic",
-        "underwear. 2 pair.",
-        "it's the 1977 greatest hits compilation\n'double platinum'\nby the rock band kiss",
-        "\"i pity the fool who mistakes me for kitten!\", sez mr. t.",
-        "a macguffin",
-        "the president of the united states",
-        "the ambassador to the federated states of micronesia",
-        "a topographical map of the south island of new zealand",
-        "a discarded can of fizz",
-        "seventeen goonies bubblegum cards",
-        "a thing your aunt gave you which you don't know what it is",
-    }
-
     kitten_found = false
     non_kitten_item_found = false
     current_non_kitten_item = nil
@@ -49,16 +28,51 @@ function _init()
     robot["glyph"] = "@"
 
     item_glyphs = {"!","#","$","%","^","&","*","(",")"}
+
     items = {}
 
-    for description in all(non_kitten_item_descriptions) do
-        add(items, create_item(description))
+    for nki in all(non_kitten_items()) do
+        add(items, create_item(nki))
     end
 
     kitten = create_item("kitten")
     kitten.is_kitten = true
 
     add(items, kitten)
+end
+
+function non_kitten_items()
+    local not_kittens = {
+        "it's an empty box",
+        "it's an broken crt monitor",
+        "you found a dog",
+        "a voucher $20 off hacksaws at joe's hardware",
+        "one prophylactic, soiled",
+        "he doesn't have time to discuss this with the committee",
+        "she is not a committee",
+        "a bag of oranges. you're allergic",
+        "underwear. 2 pair.",
+        "it's the 1977 greatest hits\ncompilation 'double platinum'\nby the rock band kiss",
+        "\"i pity the fool who mistakes me for kitten!\", sez mr. t.",
+        "a macguffin",
+        "the president of the united states",
+        "the ambassador to the federated states of micronesia",
+        "a topographical map of the south island of new zealand",
+        "a discarded can of fizz",
+        "seventeen goonies bubblegum cards",
+        "a thing your aunt gave you\nwhich you don't know what\nit is",
+        "a wetsuit",
+        "$10,000 in unmarked bills",
+        "a grumpy cat",
+        "a very enthusiastic dog",
+        "your common sense",
+        "a really good recipe for lasagne",
+        "two hundred angry bees",
+        "a patch of evil babies",
+        "'only forward'\nby Michael Marshall Smith",
+        "someone has printed out\nten years of\nalt.startrek.creative"
+    }
+    return random_n_from_seq(not_kittens, 15)
 end
 
 function _update()
@@ -127,7 +141,7 @@ function create_item(description)
     item["is_kitten"] = false;
     item["x"] = coords.x
     item["y"] = coords.y
-    item["glyph"] = item_glyphs[flr(rnd(#item_glyphs))+1]
+    item["glyph"] = item_glyphs[random_number(#item_glyphs)]
     item["color"] = random_color()
     item["description"] = description
     return item
@@ -183,8 +197,8 @@ end
 
 function pick_coords()
     local coords = {}
-    coords["x"] = flr(rnd(max_x))+1
-    coords["y"] = flr(rnd(max_y))+1
+    coords["x"] = random_number(max_x)
+    coords["y"] = random_number(max_y)
 
     if overlaps(coords.x, robot_start_x) and overlaps(coords.y, robot_start_y) then
         return pick_coords()
@@ -206,7 +220,7 @@ function psfx(num)
 end
 
 function random_color()
-    local color = flr(rnd(15))+1
+    local color = random_number(15)
     if color != robot_color and color != checked_item_color and color != background_color then
         return color
     else
@@ -214,6 +228,30 @@ function random_color()
     end
 end
 
+function random_n_from_seq(seq, n)
+    local mutable_seq = {}
+    for v in all(seq) do
+        add(mutable_seq, v)
+    end
+
+    local randomised_seq = {}
+    local i = 0
+    local s = n
+
+    if n > #mutable_seq then s = #mutable_seq end
+
+    while i < s do
+        local pick = mutable_seq[random_number(#mutable_seq)]
+        add(randomised_seq, pick)
+        del(mutable_seq, pick)
+        i += 1
+    end
+    return randomised_seq
+end
+
+function random_number(number_of_items)
+    return flr(rnd(number_of_items)) + 1
+end
 
 __sfx__
 00100000127501575011750056001f5002550001700117002850026500315002c500225000c600136001760019600166002d50014600176001c60000000216000000000000000000000000000000000000000000

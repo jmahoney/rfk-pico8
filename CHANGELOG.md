@@ -1,4 +1,7 @@
 # Changelog
+### 6 November 2018
+- more non-kitten items
+- randomly picking n of them
 
 ### 25 October 2018
 - refactored item creation
