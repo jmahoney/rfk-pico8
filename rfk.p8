@@ -163,12 +163,17 @@ function draw_item(item)
 end
 
 function draw_kitten_found()
-    rectfill(8, 8, 119, 119, 3)
+    draw_message_box()
     print("you found kitten\nway to go robot!", 26, 26, 9)
 end
 
+function draw_message_box()
+    rect(8,8,119,119,7)
+    rectfill(9,9,118,118,0)
+end
+
 function draw_non_kitten_item_found()
-    rectfill(8, 8, 119, 119, 3)
+    draw_message_box()
     print(current_non_kitten_item.description, 26, 26, 9)
 end
 
