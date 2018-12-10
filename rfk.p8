@@ -3,7 +3,7 @@ version 16
 __lua__
 --- robot finds kitten
 function _init()
-    debug = true
+    debug = false
 
     sfx_timer = 0
 
@@ -31,7 +31,7 @@ function _init()
 
     items = {}
 
-    for nki in all(non_kitten_items()) do
+    for nki in all(_non_kitten_items()) do
         add(items, create_item(nki))
     end
 
@@ -41,8 +41,8 @@ function _init()
     add(items, kitten)
 end
 
-function non_kitten_items()
-    local not_kittens = {
+function _non_kitten_items()
+    local non_kitten_items = {
         "it's an empty box",
         "it's an broken crt monitor",
         "you found a dog",
@@ -72,14 +72,19 @@ function non_kitten_items()
         "'only forward'\nby Michael Marshall Smith",
         "someone has printed out\nten years of\nalt.startrek.creative"
     }
-    return random_n_from_seq(not_kittens, 15)
+
+    return random_n_from_seq(non_kitten_items, 15)
 end
 
 function _update()
     if kitten_found then
-
+        if btn(4) or btn(5) then
+            _init()
+        end
     elseif non_kitten_item_found then
-
+        if btn(4) or btn(5) then
+            non_kitten_item_found = false
+        end
     else
         move_robot()
         check_collision()
@@ -110,7 +115,7 @@ function check_collision()
     end
 
     for i in all(items) do
-        if overlaps(robot.x, i.x) and overlaps(robot.y, i.y) then
+        if i.checked == false and overlaps(robot.x, i.x) and overlaps(robot.y, i.y) then
             non_kitten_item_found = true
             current_non_kitten_item = i
             i.checked = true
@@ -133,7 +138,6 @@ function overlaps(src, dst)
     return false
 end
 
---- oh dear
 function create_item(description)
     local item = {}
     local coords = pick_coords()
@@ -146,7 +150,6 @@ function create_item(description)
     item["description"] = description
     return item
 end
-
 
 function draw_debug()
     local msg = "rx:"..robot.x..",ry:"..robot.y..",kx:"..kitten.x..",ky:"..kitten.y
