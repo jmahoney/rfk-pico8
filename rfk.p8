@@ -35,7 +35,7 @@ function _init()
         add(items, create_item(nki))
     end
 
-    kitten = create_item("kitten")
+    kitten = create_item({"kitten"})
     kitten.is_kitten = true
 
     add(items, kitten)
@@ -43,34 +43,34 @@ end
 
 function _non_kitten_items()
     local non_kitten_items = {
-        "it's an empty box",
-        "it's an broken crt monitor",
-        "you found a dog",
-        "a voucher $20 off hacksaws at joe's hardware",
-        "one prophylactic, soiled",
-        "he doesn't have time to discuss this with the committee",
-        "she is not a committee",
-        "a bag of oranges. you're allergic",
-        "underwear. 2 pair.",
-        "it's the 1977 greatest hits\ncompilation 'double platinum'\nby the rock band kiss",
-        "\"i pity the fool who mistakes me for kitten!\", sez mr. t.",
-        "a macguffin",
-        "the president of the united states",
-        "the ambassador to the federated states of micronesia",
-        "a topographical map of the south island of new zealand",
-        "a discarded can of fizz",
-        "seventeen goonies bubblegum cards",
-        "a thing your aunt gave you\nwhich you don't know what\nit is",
-        "a wetsuit",
-        "$10,000 in unmarked bills",
-        "a grumpy cat",
-        "a very enthusiastic dog",
-        "your common sense",
-        "a really good recipe for lasagne",
-        "two hundred angry bees",
-        "a patch of evil babies",
-        "'only forward'\nby Michael Marshall Smith",
-        "someone has printed out\nten years of\nalt.startrek.creative"
+        {"it's an empty box"},
+        {"it's an broken crt monitor"},
+        {"you found a dog"},
+        {"a voucher $20 off hacksaws", "at joe's hardware"},
+        {"one prophylactic, soiled"},
+        {"he doesn't have time to", "discuss this with", "the committee"},
+        {"she is not a committee"},
+        {"a bag of oranges.","you're allergic"},
+        {"underwear. 2 pair."},
+        {"it's the 1977 greatest hits","compilation 'double platinum'","by the rock band kiss"},
+        {"i pity the fool", "who mistakes me", "for kitten!"},
+        {"a macguffin"},
+        {"the president of the united states"},
+        {"the ambassador to the", "federated states","of micronesia"},
+        {"a topographical map of the south island of new zealand"},
+        {"a discarded can of fizz"},
+        {"seventeen goonies bubblegum cards"},
+        {"a thing your aunt gave you","which you don't know what","it is"},
+        {"a wetsuit"},
+        {"$10,000 in unmarked bills"},
+        {"a grumpy cat"},
+        {"a very enthusiastic dog"},
+        {"your common sense"},
+        {"a really good recipe for lasagne"},
+        {"two hundred angry bees"},
+        {"a patch of evil babies"},
+        {"only forward","by Michael Marshall Smith"},
+        {"someone has printed out","ten years of","alt.startrek.creative"}
     }
 
     return random_n_from_seq(non_kitten_items, 15)
@@ -100,9 +100,9 @@ function _draw()
     draw_robot()
 
     if kitten_found then
-        draw_kitten_found()
+        draw_message_box({"you found kitten","way to go robot!"},"press a button to play again")
     elseif non_kitten_item_found then
-        draw_non_kitten_item_found()
+        draw_message_box(current_non_kitten_item.description,"press a button to continue")
     end
 
     if (debug) then draw_debug() end
@@ -162,19 +162,25 @@ function draw_item(item)
     print(item.glyph, item.x, item.y, color)
 end
 
-function draw_kitten_found()
-    draw_message_box()
-    print("you found kitten\nway to go robot!", 26, 26, 9)
-end
+function draw_message_box(messages,continue_message)
+    local line_count = #messages
+    local box_height = (line_count * 6) + 44 --includes padding 42 + 2 for border
+    local box_width = 119
+    local top = (128-box_height)/2
+    local left = 8
 
-function draw_message_box()
-    rect(8,8,119,119,7)
-    rectfill(9,9,118,118,0)
-end
 
-function draw_non_kitten_item_found()
-    draw_message_box()
-    print(current_non_kitten_item.description, 26, 26, 9)
+    rect(left,top,box_width,top+box_height,7)
+    rectfill(left+1,top+1,box_width-1,(top+box_height-1),0)
+    -- print(message, 26, 26, 9)
+
+    line_top = top + 1 + 12
+    for m in all(messages) do
+        print(m, left+1, line_top, 9)
+        line_top += 6
+    end
+    print(continue_message, left+1, line_top+18, 9)
+
 end
 
 function draw_robot()
