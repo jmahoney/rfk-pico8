@@ -46,21 +46,21 @@ function _non_kitten_items()
         {"it's an empty box"},
         {"it's an broken crt monitor"},
         {"you found a dog"},
-        {"a voucher $20 off hacksaws", "at joe's hardware"},
+        {"a voucher $20", "off hacksaws", "at joe's hardware"},
         {"one prophylactic, soiled"},
         {"he doesn't have time to", "discuss this with", "the committee"},
         {"she is not a committee"},
         {"a bag of oranges.","you're allergic"},
         {"underwear. 2 pair."},
-        {"it's the 1977 greatest hits","compilation 'double platinum'","by the rock band kiss"},
+        {"it's the 1977", "greatest hits","compilation", "'double platinum'","by the rock band", "kiss"},
         {"i pity the fool", "who mistakes me", "for kitten!"},
         {"a macguffin"},
         {"the president of the united states"},
         {"the ambassador to the", "federated states","of micronesia"},
-        {"a topographical map of the south island of new zealand"},
+        {"a topographical", "map of the", "south island","of", "new zealand"},
         {"a discarded can of fizz"},
-        {"seventeen goonies bubblegum cards"},
-        {"a thing your aunt gave you","which you don't know what","it is"},
+        {"seventeen goonies", "bubblegum cards"},
+        {"a thing your aunt","gave you","which you don't", "know what","it is"},
         {"a wetsuit"},
         {"$10,000 in unmarked bills"},
         {"a grumpy cat"},
@@ -69,7 +69,7 @@ function _non_kitten_items()
         {"a really good recipe for lasagne"},
         {"two hundred angry bees"},
         {"a patch of evil babies"},
-        {"only forward","by Michael Marshall Smith"},
+        {"only forward","by ","Michael Marshall Smith"},
         {"someone has printed out","ten years of","alt.startrek.creative"}
     }
 
@@ -165,22 +165,26 @@ end
 function draw_message_box(messages,continue_message)
     local line_count = #messages
     local box_height = (line_count * 6) + 44 --includes padding 42 + 2 for border
-    local box_width = 119
+    local box_width = (#continue_message * 4) + 8
+    for m in all(messages) do
+        local line_width = (#m * 4) + 8
+        if (line_width > box_width) then
+            box_width = line_width
+        end
+    end
+
     local top = (128-box_height)/2
-    local left = 8
+    local left = (128-box_width)/2
 
-
-    rect(left,top,box_width,top+box_height,7)
-    rectfill(left+1,top+1,box_width-1,(top+box_height-1),0)
-    -- print(message, 26, 26, 9)
+    rect(left,top,left+box_width,top+box_height,7)
+    rectfill(left+1,top+1,left+box_width-1,(top+box_height-1),0)
 
     line_top = top + 1 + 12
     for m in all(messages) do
-        print(m, left+1, line_top, 9)
+        print(m, (128-(#m*4))/2, line_top, 9)
         line_top += 6
     end
-    print(continue_message, left+1, line_top+18, 9)
-
+    print(continue_message, left+4, line_top+18, 9)
 end
 
 function draw_robot()
@@ -189,7 +193,7 @@ end
 
 function move_robot()
     if btn(0) or btn(1) or btn(2) or btn(3) then
-        psfx(0)
+        play_sfx(0)
         if sfx_timer <= 0 then
             sfx_timer = 20
         end
@@ -227,7 +231,7 @@ function pick_coords()
     return coords
 end
 
-function psfx(num)
+function play_sfx(num)
     if sfx_timer <= 0 then
         sfx(num)
     end
