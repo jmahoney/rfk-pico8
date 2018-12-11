@@ -1,5 +1,11 @@
 # Changelog
 
+### 11 Decemver 2018
+- version 1.0!
+- you can find kitten and non-kitten items
+- it will play a sound when you do
+- the message is displayed ok
+
 ### 10 December 2018
 - you can carry on after you find a non-kitten item
 - you can play again after you find the kitten
