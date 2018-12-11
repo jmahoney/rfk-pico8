@@ -53,7 +53,6 @@ function _non_kitten_items()
         {"a bag of oranges.","you're allergic"},
         {"underwear. 2 pair."},
         {"it's the 1977", "greatest hits","compilation", "'double platinum'","by the rock band", "kiss"},
-        {"i pity the fool", "who mistakes me", "for kitten!"},
         {"a macguffin"},
         {"the president", "of the", "united states"},
         {"the ambassador to the", "federated states","of micronesia"},
@@ -66,11 +65,27 @@ function _non_kitten_items()
         {"a grumpy cat"},
         {"a very enthusiastic dog"},
         {"your common sense"},
-        {"a really good recipe for lasagne"},
+        {"a really good recipe", "for lasagne"},
         {"two hundred angry bees"},
         {"a patch of evil babies"},
         {"only forward","by ","michael marshall smith"},
-        {"someone has printed out","ten years of","alt.startrek.creative"}
+        {"someone has printed out","ten years of","alt.startrek.creative"},
+        {"That's just an old tin can."},
+        {"\"I pity the fool who mistakes", "me for kitten!\",", "sez Mr. T."},
+        {"That's just an old tin can."},
+        {"It's an altar to the horse god."},
+        {"A box of dancing","mechanical pencils.","They dance! They sing!"},
+        {"It's an old Duke Ellington record."},
+        {"A box of fumigation pellets."},
+        {"A digital clock.","It's stuck at 2:17 PM."},
+        {"That's just a charred human corpse."},
+        {"An empty shopping bag.","Paper or plastic?"},
+        {"A coat hanger hovers in thin air.","Odd."},
+        {"A freshly-baked pumpkin pie."},
+        {"Leonard Richardson is here,","asking people to lick him."},
+        {"It's another robot,","more advanced in design than you","but strangely immobile."},
+        {"An automated robot-hater.","It frowns disapprovingly", "at you."},
+        {"An automated robot-liker.","It smiles at you."}
     }
 
     return random_n_from_seq(non_kitten_items, 15)
