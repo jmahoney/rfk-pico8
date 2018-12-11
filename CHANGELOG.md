@@ -1,6 +1,6 @@
 # Changelog
 
-### 11 Decemver 2018
+### 11 December 2018
 - version 1.0!
 - you can find kitten and non-kitten items
 - it will play a sound when you do
