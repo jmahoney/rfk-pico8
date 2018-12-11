@@ -55,7 +55,7 @@ function _non_kitten_items()
         {"it's the 1977", "greatest hits","compilation", "'double platinum'","by the rock band", "kiss"},
         {"i pity the fool", "who mistakes me", "for kitten!"},
         {"a macguffin"},
-        {"the president of the united states"},
+        {"the president", "of the", "united states"},
         {"the ambassador to the", "federated states","of micronesia"},
         {"a topographical", "map of the", "south island","of", "new zealand"},
         {"a discarded can of fizz"},
@@ -69,7 +69,7 @@ function _non_kitten_items()
         {"a really good recipe for lasagne"},
         {"two hundred angry bees"},
         {"a patch of evil babies"},
-        {"only forward","by ","Michael Marshall Smith"},
+        {"only forward","by ","michael marshall smith"},
         {"someone has printed out","ten years of","alt.startrek.creative"}
     }
 
@@ -110,12 +110,14 @@ end
 
 function check_collision()
     if overlaps(robot.x, kitten.x) and overlaps(robot.y, kitten.y) then
+        sfx(2)
         kitten_found = true
         return
     end
 
     for i in all(items) do
         if i.checked == false and overlaps(robot.x, i.x) and overlaps(robot.y, i.y) then
+            sfx(1)
             non_kitten_item_found = true
             current_non_kitten_item = i
             i.checked = true
@@ -269,3 +271,4 @@ end
 __sfx__
 00100000127501575011750056001f5002550001700117002850026500315002c500225000c600136001760019600166002d50014600176001c60000000216000000000000000000000000000000000000000000
 0010000034050360502100036000360002f000012000d20009100081000710006100142000710008100081000710007100061000810005000050000a100060000a1000a100060000a10007100091000110003100
+001000002d0502c0502d0503205037000300002d0000e0000c0000b00012000100000f0000e0000e0000d0000f000100001200013000000000000000000000000000000000000000000000000000000000000000
